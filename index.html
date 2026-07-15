@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kimberley Mubiru | ICT Project Management & Business Applications Specialist</title>
+  <meta name="description" content="Kimberley Mubiru – ICT Project Management and Business Applications Specialist in banking and enterprise technology. Driven by Growth, Governance, and Grit." />
+  <meta name="keywords" content="Kimberley Mubiru, ICT Project Management, Business Applications, Banking Technology, Enterprise IT, Kenya" />
+  <meta property="og:title" content="Kimberley Mubiru | ICT Project Management Specialist" />
+  <meta property="og:description" content="Driving enterprise technology success through Growth, Governance, and Grit." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3/src/index.js"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div id="progress-bar" role="progressbar" aria-label="Page scroll progress"></div>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo" aria-label="Home">
+        <span class="logo-text">KM</span>
+        <span class="logo-dot"></span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#about" class="nav-link" data-section="about">About</a></li>
+        <li><a href="#philosophy" class="nav-link" data-section="philosophy">Philosophy</a></li>
+        <li><a href="#experience" class="nav-link" data-section="experience">Experience</a></li>
+        <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
+        <li><a href="#education" class="nav-link" data-section="education">Education</a></li>
+        <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+      </ul>
+      <a href="mailto:kimberleymubiru21@gmail.com" class="nav-cta" id="nav-cta-btn">Hire Me</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <ul>
+        <li><a href="#about" class="mobile-nav-link">About</a></li>
+        <li><a href="#philosophy" class="mobile-nav-link">Philosophy</a></li>
+        <li><a href="#experience" class="mobile-nav-link">Experience</a></li>
+        <li><a href="#skills" class="mobile-nav-link">Skills</a></li>
+        <li><a href="#education" class="mobile-nav-link">Education</a></li>
+        <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero" class="hero-section">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-particles" id="hero-particles" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Available for Opportunities</span>
+      </div>
+      <h1 class="hero-name">
+        <span class="name-line">Kimberley</span>
+        <span class="name-line accent">Mubiru</span>
+      </h1>
+      <p class="hero-title">ICT Project Management &amp; Business Applications Specialist</p>
+      <p class="hero-tagline">
+        Driving enterprise technology success through <br />
+        <span class="typing-container">
+          <span class="typing-text" id="typing-text"></span>
+          <span class="typing-cursor">|</span>
+        </span>
+      </p>
+      <div class="hero-actions">
+        <a href="#experience" class="btn btn-primary" id="view-exp-btn">
+          <i class="ph ph-briefcase"></i>
+          View Experience
+        </a>
+        <a href="#" class="btn btn-glass" id="download-cv-btn" download>
+          <i class="ph ph-download-simple"></i>
+          Download CV
+        </a>
+        <a href="#contact" class="btn btn-outline" id="contact-btn">
+          <i class="ph ph-envelope"></i>
+          Contact
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" data-target="6">0</span>
+          <span class="stat-label">Roles &amp; Internships</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="5">0</span>
+          <span class="stat-label">Certifications</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="3">0</span>
+          <span class="stat-label">The 3Gs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="dashboard-card card-1">
+        <div class="card-header"><span class="card-dot green"></span> System Uptime</div>
+        <div class="card-value">99.7%</div>
+        <div class="card-sparkline">
+          <svg viewBox="0 0 120 40" preserveAspectRatio="none">
+            <polyline points="0,35 20,28 40,30 60,15 80,18 100,8 120,12" fill="none" stroke="#00d4ff" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+      <div class="dashboard-card card-2">
+        <div class="card-header"><span class="card-dot blue"></span> Projects Active</div>
+        <div class="card-value">Active</div>
+        <div class="card-tags">
+          <span class="tag">Core Banking</span>
+          <span class="tag">UAT</span>
+        </div>
+      </div>
+      <div class="dashboard-card card-3">
+        <div class="card-header"><span class="card-dot purple"></span> Governance Score</div>
+        <div class="card-ring">
+          <svg viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/>
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#7c3aed" stroke-width="6" stroke-dasharray="138" stroke-dashoffset="20" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+            <text x="30" y="35" text-anchor="middle" fill="#fff" font-size="10" font-family="Space Grotesk">95%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ===================== PHILOSOPHY (3Gs) ===================== -->
+  <section id="philosophy" class="section philosophy-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge">Professional Philosophy</span>
+        <h2 class="section-title">The <span class="gradient-text">3Gs</span> Framework</h2>
+        <p class="section-subtitle">Three pillars that underpin every project, decision, and outcome in my career.</p>
+      </div>
+      <div class="philosophy-cards">
+        <article class="philosophy-card reveal" tabindex="0">
+          <div class="card-icon-wrap growth">
+            <i class="ph ph-trend-up"></i>
+          </div>
+          <h3>Growth</h3>
+          <p>Focus on innovation, continuous improvement, and leveraging technology to enhance enterprise systems and operational efficiency. Every engagement is an opportunity to expand capabilities.</p>
+          <div class="card-glow green-glow"></div>
+          <div class="card-border-line"></div>
+        </article>
+        <article class="philosophy-card reveal" tabindex="0">
+          <div class="card-icon-wrap governance">
+            <i class="ph ph-shield-check"></i>
+          </div>
+          <h3>Governance</h3>
+          <p>Commitment to strong ICT governance, compliance, risk management, and maintaining secure and reliable banking technology systems that meet regulatory standards.</p>
+          <div class="card-glow blue-glow"></div>
+          <div class="card-border-line"></div>
+        </article>
+        <article class="philosophy-card reveal" tabindex="0">
+          <div class="card-icon-wrap grit">
+            <i class="ph ph-lightning"></i>
+          </div>
+          <h3>Grit</h3>
+          <p>Resilience, problem-solving, and determination to deliver complex ICT projects successfully within demanding enterprise environments, regardless of constraints or challenges.</p>
+          <div class="card-glow purple-glow"></div>
+          <div class="card-border-line"></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about" class="section about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-left reveal">
+          <div class="section-header">
+            <span class="section-badge">About Me</span>
+            <h2 class="section-title">Enterprise IT <span class="gradient-text">Professional</span></h2>
+          </div>
+          <p class="about-desc">A results-driven ICT Project Management and Business Applications Specialist with hands-on experience in the banking and enterprise technology sector. I bridge the gap between technical teams and business stakeholders to deliver robust, scalable technology solutions.</p>
+          <div class="about-highlights">
+            <div class="highlight-item">
+              <i class="ph ph-check-circle"></i>
+              <span>ICT project coordination from planning through execution and closure</span>
+            </div>
+            <div class="highlight-item">
+              <i class="ph ph-check-circle"></i>
+              <span>Deep experience in banking and enterprise technology environments</span>
+            </div>
+            <div class="highlight-item">
+              <i class="ph ph-check-circle"></i>
+              <span>Cross-functional team, vendor, and stakeholder coordination</span>
+            </div>
+            <div class="highlight-item">
+              <i class="ph ph-check-circle"></i>
+              <span>Enterprise application management and system integrations</span>
+            </div>
+            <div class="highlight-item">
+              <i class="ph ph-check-circle"></i>
+              <span>Passionate about system reliability and digital transformation</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-right reveal">
+          <div class="profile-card">
+            <div class="profile-avatar">
+              <div class="avatar-ring"></div>
+              <div class="avatar-inner">
+                <span class="avatar-initials">KM</span>
+              </div>
+            </div>
+            <div class="profile-info">
+              <h3>Kimberley Mubiru</h3>
+              <p>ICT Project Management &amp; Business Applications Specialist</p>
+              <div class="profile-tags">
+                <span class="ptag">Banking Tech</span>
+                <span class="ptag">Oracle Flexcube</span>
+                <span class="ptag">UAT</span>
+                <span class="ptag">Project Management</span>
+              </div>
+            </div>
+          </div>
+          <div class="location-card">
+            <i class="ph ph-map-pin"></i>
+            <div>
+              <span class="location-label">Based in</span>
+              <span class="location-value">Nairobi, Kenya</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERIENCE ===================== -->
+  <section id="experience" class="section experience-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge">Career Journey</span>
+        <h2 class="section-title">Professional <span class="gradient-text">Experience</span></h2>
+        <p class="section-subtitle">A track record of delivering enterprise ICT solutions across banking and technology sectors.</p>
+      </div>
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <div class="timeline-node">
+            <div class="node-ring"></div>
+            <i class="ph ph-building-office"></i>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3>Associate, ICT Project Management</h3>
+                <span class="company">I&amp;M Bank</span>
+              </div>
+              <div class="timeline-meta">
+                <span class="badge active-badge">Current</span>
+              </div>
+            </div>
+            <p>Leading ICT project coordination activities, liaising between business units and technology teams, managing project documentation, and ensuring timely delivery of banking technology initiatives.</p>
+            <div class="timeline-tags">
+              <span>Project Management</span><span>Banking Tech</span><span>Stakeholder Management</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-node">
+            <div class="node-ring"></div>
+            <i class="ph ph-cpu"></i>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3>Officer, IT Business Applications</h3>
+                <span class="company">SBM Bank Kenya</span>
+              </div>
+            </div>
+            <p>Managed business application support, coordinated system integrations, handled UAT processes, and ensured the stability and performance of core and non-core banking applications.</p>
+            <div class="timeline-tags">
+              <span>Business Applications</span><span>UAT</span><span>System Integration</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-node">
+            <div class="node-ring"></div>
+            <i class="ph ph-graduation-cap"></i>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3>Graduate Trainee – IT Core Applications</h3>
+                <span class="company">SBM Bank Kenya</span>
+              </div>
+            </div>
+            <p>Trained on core banking application management, Oracle Flexcube administration, and enterprise application support within a regulated financial institution environment.</p>
+            <div class="timeline-tags">
+              <span>Oracle Flexcube</span><span>Core Banking</span><span>IT Support</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-node">
+            <div class="node-ring"></div>
+            <i class="ph ph-code"></i>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3>Intern – Non-Core Applications</h3>
+                <span class="company">SBM Bank Kenya</span>
+              </div>
+            </div>
+            <p>Provided support for non-core banking applications, performed system monitoring, assisted with troubleshooting, and contributed to application documentation and reporting.</p>
+            <div class="timeline-tags">
+              <span>Application Support</span><span>System Monitoring</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-node">
+            <div class="node-ring"></div>
+            <i class="ph ph-kanban"></i>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3>Intern – Project Management</h3>
+                <span class="company">SBM Bank Kenya</span>
+              </div>
+            </div>
+            <p>Assisted in ICT project planning, tracking milestones, preparing project reports, and coordinating communication between project stakeholders and IT teams.</p>
+            <div class="timeline-tags">
+              <span>Project Coordination</span><span>Documentation</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-node">
+            <div class="node-ring"></div>
+            <i class="ph ph-desktop"></i>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div>
+                <h3>IT Support Industrial Trainee</h3>
+                <span class="company">Knowteq Ventures</span>
+              </div>
+            </div>
+            <p>Hands-on IT support training covering network troubleshooting, hardware maintenance, software installation, and end-user technical assistance.</p>
+            <div class="timeline-tags">
+              <span>IT Support</span><span>Networking</span><span>Hardware</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section id="skills" class="section skills-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge">Technical Expertise</span>
+        <h2 class="section-title">Skills &amp; <span class="gradient-text">Capabilities</span></h2>
+        <p class="section-subtitle">A diverse technical toolkit built through banking and enterprise environments.</p>
+      </div>
+      <div class="skills-grid">
+
+        <!-- Infrastructure & Systems -->
+        <div class="skills-category reveal">
+          <div class="category-header">
+            <i class="ph ph-hard-drives"></i>
+            <h3>Infrastructure &amp; Systems</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Linux</span>
+                <span class="skill-pct">78%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="78" style="--accent: #22d3ee;"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Networking</span>
+                <span class="skill-pct">72%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="72" style="--accent: #22d3ee;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data & Databases -->
+        <div class="skills-category reveal">
+          <div class="category-header">
+            <i class="ph ph-database"></i>
+            <h3>Data &amp; Databases</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">SQL</span>
+                <span class="skill-pct">80%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="80" style="--accent: #3b82f6;"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Data Analysis</span>
+                <span class="skill-pct">75%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="75" style="--accent: #3b82f6;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testing & QA -->
+        <div class="skills-category reveal">
+          <div class="category-header">
+            <i class="ph ph-check-square"></i>
+            <h3>Testing &amp; QA</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Software Testing</span>
+                <span class="skill-pct">85%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="85" style="--accent: #a855f7;"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">UAT Coordination</span>
+                <span class="skill-pct">88%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="88" style="--accent: #a855f7;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enterprise Banking -->
+        <div class="skills-category reveal">
+          <div class="category-header">
+            <i class="ph ph-bank"></i>
+            <h3>Enterprise Banking Systems</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Oracle Flexcube CBS</span>
+                <span class="skill-pct">82%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="82" style="--accent: #f59e0b;"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Project Management</span>
+                <span class="skill-pct">90%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="90" style="--accent: #f59e0b;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Progress rings -->
+      <div class="rings-row">
+        <div class="ring-item reveal">
+          <div class="ring-wrapper">
+            <svg viewBox="0 0 100 100" class="ring-svg">
+              <circle cx="50" cy="50" r="42" class="ring-bg"/>
+              <circle cx="50" cy="50" r="42" class="ring-fill" data-pct="95" stroke="#22d3ee" stroke-dasharray="264" stroke-dashoffset="264"/>
+            </svg>
+            <span class="ring-value">95%</span>
+          </div>
+          <span class="ring-label">Project Delivery</span>
+        </div>
+        <div class="ring-item reveal">
+          <div class="ring-wrapper">
+            <svg viewBox="0 0 100 100" class="ring-svg">
+              <circle cx="50" cy="50" r="42" class="ring-bg"/>
+              <circle cx="50" cy="50" r="42" class="ring-fill" data-pct="90" stroke="#a855f7" stroke-dasharray="264" stroke-dashoffset="264"/>
+            </svg>
+            <span class="ring-value">90%</span>
+          </div>
+          <span class="ring-label">Stakeholder Satisfaction</span>
+        </div>
+        <div class="ring-item reveal">
+          <div class="ring-wrapper">
+            <svg viewBox="0 0 100 100" class="ring-svg">
+              <circle cx="50" cy="50" r="42" class="ring-bg"/>
+              <circle cx="50" cy="50" r="42" class="ring-fill" data-pct="88" stroke="#3b82f6" stroke-dasharray="264" stroke-dashoffset="264"/>
+            </svg>
+            <span class="ring-value">88%</span>
+          </div>
+          <span class="ring-label">System Reliability</span>
+        </div>
+        <div class="ring-item reveal">
+          <div class="ring-wrapper">
+            <svg viewBox="0 0 100 100" class="ring-svg">
+              <circle cx="50" cy="50" r="42" class="ring-bg"/>
+              <circle cx="50" cy="50" r="42" class="ring-fill" data-pct="92" stroke="#f59e0b" stroke-dasharray="264" stroke-dashoffset="264"/>
+            </svg>
+            <span class="ring-value">92%</span>
+          </div>
+          <span class="ring-label">Governance Score</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EDUCATION & CERTS ===================== -->
+  <section id="education" class="section edu-section">
+    <div class="container">
+      <!-- Education -->
+      <div class="section-header reveal">
+        <span class="section-badge">Academic Background</span>
+        <h2 class="section-title">Education &amp; <span class="gradient-text">Certifications</span></h2>
+      </div>
+      <div class="edu-grid">
+        <div class="edu-card reveal" tabindex="0">
+          <div class="edu-icon">
+            <i class="ph ph-graduation-cap"></i>
+          </div>
+          <div class="edu-info">
+            <span class="edu-level">Bachelor of Science</span>
+            <h3>Software Engineering</h3>
+            <span class="edu-school">Multimedia University of Kenya</span>
+          </div>
+          <div class="edu-glow"></div>
+        </div>
+        <div class="edu-card reveal" tabindex="0">
+          <div class="edu-icon">
+            <i class="ph ph-book-open"></i>
+          </div>
+          <div class="edu-info">
+            <span class="edu-level">Secondary Education</span>
+            <h3>Kenya Certificate of Secondary Education</h3>
+            <span class="edu-school">Moi Girls High School Eldoret</span>
+          </div>
+          <div class="edu-glow"></div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="section-header reveal" style="margin-top: 4rem;">
+        <span class="section-badge">Professional Credentials</span>
+        <h2 class="section-title">Certifi<span class="gradient-text">cations</span></h2>
+      </div>
+      <div class="certs-grid">
+        <div class="cert-card reveal" tabindex="0">
+          <div class="cert-badge-icon"><i class="ph ph-shield"></i></div>
+          <div class="cert-info">
+            <h4>Data Protection Course</h4>
+            <span class="cert-issuer">CIPIT</span>
+          </div>
+          <div class="cert-glow"></div>
+        </div>
+        <div class="cert-card reveal" tabindex="0">
+          <div class="cert-badge-icon"><i class="ph ph-google-logo"></i></div>
+          <div class="cert-info">
+            <h4>Google Project Management</h4>
+            <span class="cert-issuer">Google / Coursera</span>
+          </div>
+          <div class="cert-glow"></div>
+        </div>
+        <div class="cert-card reveal" tabindex="0">
+          <div class="cert-badge-icon"><i class="ph ph-google-logo"></i></div>
+          <div class="cert-info">
+            <h4>Google IT Support</h4>
+            <span class="cert-issuer">Google / Coursera</span>
+          </div>
+          <div class="cert-glow"></div>
+        </div>
+        <div class="cert-card reveal" tabindex="0">
+          <div class="cert-badge-icon"><i class="ph ph-bug"></i></div>
+          <div class="cert-info">
+            <h4>Fundamentals of Software Testing</h4>
+            <span class="cert-issuer">QA Testlab</span>
+          </div>
+          <div class="cert-glow"></div>
+        </div>
+        <div class="cert-card reveal" tabindex="0">
+          <div class="cert-badge-icon"><i class="ph ph-network"></i></div>
+          <div class="cert-info">
+            <h4>Routing &amp; Switching Certification</h4>
+            <span class="cert-issuer">Huawei</span>
+          </div>
+          <div class="cert-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LANGUAGES ===================== -->
+  <section class="section languages-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge">Communication</span>
+        <h2 class="section-title">Languages</h2>
+      </div>
+      <div class="languages-grid">
+        <div class="language-card reveal" tabindex="0">
+          <div class="lang-flag">🇬🇧</div>
+          <div class="lang-info">
+            <h3>English</h3>
+            <span class="lang-level">Business Fluent</span>
+            <div class="lang-bar"><div class="lang-fill" data-width="95"></div></div>
+          </div>
+        </div>
+        <div class="language-card reveal" tabindex="0">
+          <div class="lang-flag">🇰🇪</div>
+          <div class="lang-info">
+            <h3>Kiswahili</h3>
+            <span class="lang-level">Native Speaker</span>
+            <div class="lang-bar"><div class="lang-fill" data-width="100"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== IMPACT / DATA VIZ ===================== -->
+  <section class="section impact-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge">Analytics Dashboard</span>
+        <h2 class="section-title">Professional <span class="gradient-text">Impact</span></h2>
+        <p class="section-subtitle">Quantifying enterprise technology outcomes and performance metrics.</p>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-card reveal">
+          <div class="impact-header">
+            <span class="impact-icon"><i class="ph ph-rocket"></i></span>
+            <h3>Project Delivery Efficiency</h3>
+          </div>
+          <div class="impact-progress-ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#grad1)" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" class="impact-ring-fill" data-offset="16" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#22d3ee"/>
+                  <stop offset="100%" style="stop-color:#3b82f6"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="impact-ring-value">95%</span>
+          </div>
+          <p>Consistent on-time delivery of ICT projects through structured planning and execution.</p>
+        </div>
+        <div class="impact-card reveal">
+          <div class="impact-header">
+            <span class="impact-icon"><i class="ph ph-activity"></i></span>
+            <h3>System Reliability</h3>
+          </div>
+          <div class="impact-progress-ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#grad2)" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" class="impact-ring-fill" data-offset="28" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <defs>
+                <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#a855f7"/>
+                  <stop offset="100%" style="stop-color:#ec4899"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="impact-ring-value">91%</span>
+          </div>
+          <p>Maintained high system availability for critical banking applications and infrastructure.</p>
+        </div>
+        <div class="impact-card reveal">
+          <div class="impact-header">
+            <span class="impact-icon"><i class="ph ph-chart-line"></i></span>
+            <h3>Application Performance</h3>
+          </div>
+          <div class="impact-progress-ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#grad3)" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" class="impact-ring-fill" data-offset="25" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <defs>
+                <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#f59e0b"/>
+                  <stop offset="100%" style="stop-color:#ef4444"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="impact-ring-value">92%</span>
+          </div>
+          <p>Optimized enterprise application performance through systematic monitoring and tuning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-badge">Get In Touch</span>
+        <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
+        <p class="section-subtitle">Open to new opportunities, collaborations, and conversations in enterprise technology.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <div class="contact-item">
+            <div class="contact-icon-wrap">
+              <i class="ph ph-envelope-simple"></i>
+            </div>
+            <div class="contact-detail">
+              <span class="contact-label">Email</span>
+              <a href="mailto:kimberleymubiru21@gmail.com" class="contact-value">kimberleymubiru21@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap">
+              <i class="ph ph-map-pin"></i>
+            </div>
+            <div class="contact-detail">
+              <span class="contact-label">Location</span>
+              <span class="contact-value">Nairobi, Kenya</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap">
+              <i class="ph ph-briefcase"></i>
+            </div>
+            <div class="contact-detail">
+              <span class="contact-label">Availability</span>
+              <span class="contact-value">Open to Opportunities</span>
+            </div>
+          </div>
+          <div class="contact-socials">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn" id="linkedin-btn">
+              <i class="ph ph-linkedin-logo"></i>
+            </a>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub" id="github-btn">
+              <i class="ph ph-github-logo"></i>
+            </a>
+          </div>
+        </div>
+        <form class="contact-form reveal" id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="form-name">Full Name</label>
+            <div class="input-wrap">
+              <input type="text" id="form-name" name="name" placeholder="Your full name" required autocomplete="name"/>
+              <i class="ph ph-user input-icon"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="form-email">Email Address</label>
+            <div class="input-wrap">
+              <input type="email" id="form-email" name="email" placeholder="your@email.com" required autocomplete="email"/>
+              <i class="ph ph-envelope input-icon"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="form-subject">Subject</label>
+            <div class="input-wrap">
+              <input type="text" id="form-subject" name="subject" placeholder="How can I help?" required/>
+              <i class="ph ph-chat-text input-icon"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="form-message">Message</label>
+            <textarea id="form-message" name="message" placeholder="Tell me about the opportunity or project..." rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="form-submit-btn">
+            <i class="ph ph-paper-plane-tilt"></i>
+            Send Message
+          </button>
+          <div class="form-success" id="form-success" aria-live="polite">
+            <i class="ph ph-check-circle"></i>
+            Message sent successfully!
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <canvas id="footer-canvas" aria-hidden="true"></canvas>
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">KM</span>
+        <div>
+          <h3 class="footer-name">Kimberley Mubiru</h3>
+          <p class="footer-role">ICT Project Management Specialist</p>
+        </div>
+      </div>
+      <p class="footer-tagline">Building reliable enterprise technology through<br/><em>Growth, Governance, and Grit.</em></p>
+      <div class="footer-socials">
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+          <i class="ph ph-linkedin-logo"></i>
+        </a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub">
+          <i class="ph ph-github-logo"></i>
+        </a>
+        <a href="mailto:kimberleymubiru21@gmail.com" class="social-btn" aria-label="Email">
+          <i class="ph ph-envelope"></i>
+        </a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Kimberley Mubiru. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
