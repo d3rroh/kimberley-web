@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1a35"/>
+      <stop offset="1" stop-color="#020814"/>
+    </linearGradient>
+    <linearGradient id="text" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bg)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+  <text x="34" y="43" font-family="Space Grotesk, Inter, system-ui, sans-serif" font-size="26" font-weight="700" fill="url(#text)" text-anchor="middle" letter-spacing="1">KM</text>
+  <circle cx="49.5" cy="33" r="2.6" fill="#22d3ee"/>
+</svg>
