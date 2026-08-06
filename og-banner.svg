@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1a35"/>
+      <stop offset="0.5" stop-color="#071428"/>
+      <stop offset="1" stop-color="#020814"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.45" r="0.6">
+      <stop offset="0" stop-color="rgba(34,211,238,0.14)"/>
+      <stop offset="1" stop-color="rgba(34,211,238,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <text x="600" y="330" font-family="Space Grotesk, Inter, system-ui, sans-serif" font-size="120" font-weight="700" fill="url(#accent)" text-anchor="middle" letter-spacing="6">KM</text>
+  <circle cx="690" cy="240" r="12" fill="#22d3ee"/>
+  <text x="600" y="410" font-family="Space Grotesk, Inter, system-ui, sans-serif" font-size="44" font-weight="600" fill="#ffffff" text-anchor="middle">Kimberley Mubiru</text>
+  <text x="600" y="470" font-family="Inter, system-ui, sans-serif" font-size="24" fill="rgba(255,255,255,0.75)" text-anchor="middle">ICT Project Management &amp; Business Applications Specialist</text>
+  <rect x="540" y="505" width="120" height="4" rx="2" fill="url(#accent)"/>
+  <text x="600" y="575" font-family="Inter, system-ui, sans-serif" font-size="20" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="2">kimberley.name.ng</text>
+</svg>
