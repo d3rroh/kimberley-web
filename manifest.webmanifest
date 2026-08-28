@@ -1,0 +1,33 @@
+{
+  "name": "Kimberley Mubiru | ICT Project Management & Business Applications Specialist",
+  "short_name": "Kimberley Mubiru",
+  "description": "Portfolio of Kimberley Mubiru - ICT Project Management and Business Applications Specialist in banking and enterprise technology.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020814",
+  "theme_color": "#020814",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

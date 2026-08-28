@@ -109,10 +109,10 @@ function typeLoop() {
 }
 typeLoop();
 
-// ===================== HERO CANVAS (Network Nodes) =====================
-(function initHeroCanvas() {
-  const canvas = qs('#hero-canvas');
-  if (!canvas) return;
+// ===================== NETWORK CANVAS (Site-wide) =====================
+// Reusable network-nodes animation. Applied to the hero and every section
+// so the effect persists throughout the whole site.
+function initNetworkCanvas(canvas) {
   const ctx = canvas.getContext('2d');
   let W, H, nodes = [];
 
@@ -123,7 +123,7 @@ typeLoop();
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  const NODE_COUNT = 60;
+  const NODE_COUNT = window.innerWidth < 768 ? 30 : 60;
   const MAX_DIST = 130;
 
   function createNodes() {
@@ -142,12 +142,29 @@ typeLoop();
   }
   createNodes();
 
+  // Recreate nodes on resize so they stay within the new bounds
+  window.addEventListener('resize', createNodes, { passive: true });
+
   let mouse = { x: W / 2, y: H / 2 };
-  canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  }, { passive: true });
+  function onMouse(e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }
+  if (!canvas.getAttribute('data-net-mouse')) {
+    canvas.setAttribute('data-net-mouse', '1');
+    window.addEventListener('mousemove', onMouse, { passive: true });
+  }
+
+  // Pause rendering when the section is off-screen for performance
+  let visible = true;
+  let rafId = null;
+  const visibilityObserver = new IntersectionObserver((entries) => {
+    visible = entries[0].isIntersecting;
+    if (visible) loop();
+  }, { rootMargin: '200px' });
+  if (typeof IntersectionObserver !== 'undefined') {
+    visibilityObserver.observe(canvas);
+  }
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
@@ -159,9 +176,12 @@ typeLoop();
       if (n.x < 0 || n.x > W) n.vx *= -1;
       if (n.y < 0 || n.y > H) n.vy *= -1;
 
-      // Mouse repulsion
-      const dx = n.x - mouse.x;
-      const dy = n.y - mouse.y;
+      // Mouse repulsion (mouse is viewport-based, canvas is section-based offset)
+      const canvasRect = canvas.getBoundingClientRect();
+      const mx = mouse.x - canvasRect.left;
+      const my = mouse.y - canvasRect.top;
+      const dx = n.x - mx;
+      const dy = n.y - my;
       const dist = Math.hypot(dx, dy);
       if (dist < 80) {
         const f = (80 - dist) / 80 * 0.4;
@@ -216,18 +236,43 @@ typeLoop();
     beamGrad.addColorStop(1, 'transparent');
     ctx.fillStyle = beamGrad;
     ctx.fillRect(0, 0, W, H);
-
-    requestAnimationFrame(draw);
   }
-  draw();
+
+  function loop() {
+    if (!visible) return;
+    draw();
+    rafId = requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+// ===================== HERO CANVAS (Network Nodes) =====================
+(function initHeroCanvas() {
+  const canvas = qs('#hero-canvas');
+  if (!canvas) return;
+  initNetworkCanvas(canvas);
 })();
 
-// ===================== FLOATING PARTICLES (Hero) =====================
-(function createParticles() {
-  const container = qs('#hero-particles');
-  if (!container) return;
+// ===================== SECTIONS CANVAS =====================
+// Inject the network animation into every section so it runs site-wide.
+(function initSectionCanvases() {
+  const sections = qsa('.section');
+  sections.forEach(sec => {
+    // Hero already has its own canvas
+    if (sec.querySelector('#hero-canvas')) return;
+    if (sec.querySelector('.section-net')) return;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'section-net';
+    canvas.setAttribute('aria-hidden', 'true');
+    sec.insertBefore(canvas, sec.firstChild);
+    initNetworkCanvas(canvas);
+  });
+})();
+
+// ===================== FLOATING PARTICLES (Site-wide) =====================
+function createParticlesIn(container, count) {
   const colors = ['#22d3ee', '#3b82f6', '#a855f7', '#34d399'];
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
     p.style.left = `${Math.random() * 100}%`;
@@ -237,6 +282,29 @@ typeLoop();
     p.style.animationDelay = `${Math.random() * 8}s`;
     container.appendChild(p);
   }
+}
+
+(function createParticles() {
+  const heroContainer = qs('#hero-particles');
+  if (heroContainer) {
+    createParticlesIn(heroContainer, 25);
+    return;
+  }
+  // Fallback: if hero particles container is missing, still add to sections
+  qsa('.section').forEach(sec => createParticlesIn(sec, 12));
+})();
+
+// Spread floating particles across every section alongside the network canvas
+(function createSectionParticles() {
+  if (!qs('#hero-particles')) return;
+  qsa('.section').forEach(sec => {
+    if (sec.querySelector('.section-particles')) return;
+    const layer = document.createElement('div');
+    layer.className = 'section-particles';
+    layer.setAttribute('aria-hidden', 'true');
+    sec.insertBefore(layer, sec.firstChild);
+    createParticlesIn(layer, 12);
+  });
 })();
 
 // ===================== FOOTER CANVAS (Grid) =====================

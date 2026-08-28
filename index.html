@@ -20,8 +20,21 @@
   <meta name="twitter:title" content="Kimberley Mubiru | ICT Project Management & Business Applications Specialist" />
   <meta name="twitter:description" content="Driving enterprise technology success through Growth, Governance, and Grit." />
   <meta name="twitter:image" content="https://kimberley.name.ng/og-image.png" />
+  <meta name="twitter:site" content="@kimberleymp" />
 
   <link rel="canonical" href="https://kimberley.name.ng/" />
+  <link rel="alternate" hreflang="en" href="https://kimberley.name.ng/" />
+  <link rel="alternate" hreflang="x-default" href="https://kimberley.name.ng/" />
+
+  <!-- SEO meta -->
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Kimberley Mubiru" />
+  <meta name="keywords" content="Kimberley Mubiru, ICT Project Management, Business Applications, Banking Technology, Oracle Flexcube, UAT, Enterprise Software, Nairobi Kenya" />
+  <meta name="theme-color" content="#020814" />
+
+  <!-- Preload critical asset -->
+  <link rel="preload" href="styles.css" as="style" />
+  <link rel="preload" href="script.js" as="script" />
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -33,11 +46,70 @@
     "image": "https://kimberley.name.ng/og-image.png",
     "jobTitle": "ICT Project Management & Business Applications Specialist",
     "description": "ICT Project Management and Business Applications Specialist in banking and enterprise technology. Driven by Growth, Governance, and Grit.",
-    "address": { "@type": "PostalAddress", "addressCountry": "KE" },
+    "email": "mailto:kimberleymubiru21@gmail.com",
+    "address": { "@type": "PostalAddress", "addressCountry": "KE", "addressLocality": "Nairobi" },
     "knowsLanguage": ["en", "sw"],
+    "alumniOf": [
+      { "@type": "CollegeOrUniversity", "name": "Multimedia University of Kenya" }
+    ],
+    "worksFor": { "@type": "Organization", "name": "I&M Bank" },
+    "hasOccupation": [
+      {
+        "@type": "Occupation",
+        "name": "ICT Project Management",
+        "description": "Leading ICT project coordination, stakeholder management, and delivery of banking technology initiatives."
+      },
+      {
+        "@type": "Occupation",
+        "name": "Business Applications Specialist",
+        "description": "Managing enterprise business applications, UAT processes, and system integrations in banking technology."
+      }
+    ],
     "sameAs": [
-      "https://ke.linkedin.com/in/kimberley-mubiru-b2079822a"
+      "https://ke.linkedin.com/in/kimberley-mubiru-b2079822a",
+      "https://github.com/kimmy12-web"
     ]
+  }
+  </script>
+
+  <!-- Breadcrumb Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://kimberley.name.ng/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Experience",
+        "item": "https://kimberley.name.ng/#experience"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Contact",
+        "item": "https://kimberley.name.ng/#contact"
+      }
+    ]
+  }
+  </script>
+
+  <!-- WebSite Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Kimberley Mubiru Portfolio",
+    "url": "https://kimberley.name.ng/",
+    "description": "Portfolio of Kimberley Mubiru – ICT Project Management and Business Applications Specialist in banking and enterprise technology.",
+    "inLanguage": "en",
+    "publisher": { "@type": "Person", "name": "Kimberley Mubiru" }
   }
   </script>
 
@@ -46,6 +118,9 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="apple-touch-icon" href="favicon-64.png" />
+
+  <!-- PWA / Web App Manifest -->
+  <link rel="manifest" href="manifest.webmanifest" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -122,7 +197,7 @@
           <i class="ph ph-briefcase"></i>
           View Experience
         </a>
-        <a href="#" class="btn btn-glass" id="download-cv-btn" download>
+        <a href="cv.pdf" class="btn btn-glass" id="download-cv-btn" download="Kimberley-Mubiru-CV.pdf">
           <i class="ph ph-download-simple"></i>
           Download CV
         </a>
@@ -820,7 +895,7 @@
             <a href="https://ke.linkedin.com/in/kimberley-mubiru-b2079822a" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn" id="linkedin-btn">
               <i class="ph ph-linkedin-logo"></i>
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub" id="github-btn">
+            <a href="https://github.com/kimmy12-web" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub" id="github-btn">
               <i class="ph ph-github-logo"></i>
             </a>
           </div>
@@ -880,7 +955,7 @@
         <a href="https://ke.linkedin.com/in/kimberley-mubiru-b2079822a" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
           <i class="ph ph-linkedin-logo"></i>
         </a>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub">
+        <a href="https://github.com/kimmy12-web" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub">
           <i class="ph ph-github-logo"></i>
         </a>
         <a href="mailto:kimberleymubiru21@gmail.com" class="social-btn" aria-label="Email">
