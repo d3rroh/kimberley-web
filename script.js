@@ -9,14 +9,15 @@
 const qs = (s, ctx = document) => ctx.querySelector(s);
 const qsa = (s, ctx = document) => ctx.querySelectorAll(s);
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ===================== SCROLL PROGRESS BAR =====================
 const progressBar = qs('#progress-bar');
 function updateProgress() {
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  progressBar.style.width = `${(scrollTop / docHeight) * 100}%`;
+  progressBar.style.width = `${docHeight > 0 ? (scrollTop / docHeight) * 100 : 0}%`;
 }
-window.addEventListener('scroll', updateProgress, { passive: true });
 
 // ===================== NAVBAR =====================
 const navbar = qs('#navbar');
@@ -24,27 +25,43 @@ const navLinks = qsa('.nav-link');
 const hamburger = qs('#hamburger');
 const mobileMenu = qs('#mobile-menu');
 
-let lastScrollY = 0;
-
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  navbar.classList.toggle('scrolled', y > 30);
-  lastScrollY = y;
-}, { passive: true });
-
 // Active nav link on scroll
+const navSections = ['about', 'philosophy', 'experience', 'skills', 'education', 'contact']
+  .map(id => qs(`#${id}`))
+  .filter(Boolean);
 function updateActiveNav() {
-  const sections = ['about', 'philosophy', 'experience', 'skills', 'education', 'contact'];
   let current = '';
-  sections.forEach(id => {
-    const el = qs(`#${id}`);
-    if (el && el.getBoundingClientRect().top <= 100) current = id;
+  navSections.forEach(el => {
+    if (el.getBoundingClientRect().top <= 100) current = el.id;
   });
   navLinks.forEach(link => {
     link.classList.toggle('active', link.dataset.section === current);
   });
 }
-window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+// ===================== SCROLL-BASED PARALLAX (subtle) =====================
+const heroContent = qs('.hero-content');
+function updateParallax(y) {
+  if (!heroContent || prefersReducedMotion || y > 800) return;
+  heroContent.style.transform = `translateY(${y * 0.15}px)`;
+  heroContent.style.opacity = Math.max(0, 1 - y / 600);
+}
+
+// Single scroll listener, batched to one update per animation frame
+let scrollTicking = false;
+function onScrollFrame() {
+  const y = window.scrollY;
+  updateProgress();
+  navbar.classList.toggle('scrolled', y > 30);
+  updateActiveNav();
+  updateParallax(y);
+  scrollTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(onScrollFrame);
+}, { passive: true });
 
 // Mobile menu toggle
 hamburger.addEventListener('click', () => {
@@ -69,7 +86,7 @@ qsa('a[href^="#"]').forEach(link => {
     const target = qs(link.getAttribute('href'));
     if (!target) return;
     e.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
   });
 });
 
@@ -88,6 +105,10 @@ const typingEl = qs('#typing-text');
 
 function typeLoop() {
   if (!typingEl) return;
+  if (prefersReducedMotion) {
+    typingEl.textContent = phrases[0];
+    return;
+  }
   const phrase = phrases[phraseIndex];
   if (!isDeleting) {
     typingEl.textContent = phrase.slice(0, charIndex + 1);
@@ -112,19 +133,49 @@ typeLoop();
 // ===================== NETWORK CANVAS (Site-wide) =====================
 // Reusable network-nodes animation. Applied to the hero and every section
 // so the effect persists throughout the whole site.
+
+// One shared pointer position for every canvas
+const netMouse = { x: -9999, y: -9999 };
+window.addEventListener('mousemove', e => {
+  netMouse.x = e.clientX;
+  netMouse.y = e.clientY;
+}, { passive: true });
+
+// Pre-rendered glow sprites (one per hue) instead of a new gradient per node per frame
+const glowSprites = {};
+function getGlowSprite(hue) {
+  if (glowSprites[hue]) return glowSprites[hue];
+  const size = 32;
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const g = c.getContext('2d');
+  const grad = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  grad.addColorStop(0, `hsla(${hue}, 90%, 70%, 0.15)`);
+  grad.addColorStop(1, 'transparent');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, size, size);
+  return (glowSprites[hue] = c);
+}
+
+function debounce(fn, ms) {
+  let t;
+  return () => { clearTimeout(t); t = setTimeout(fn, ms); };
+}
+
 function initNetworkCanvas(canvas) {
   const ctx = canvas.getContext('2d');
   let W, H, nodes = [];
+  let visible = false;
+  let rafId = null;
+
+  const NODE_COUNT = window.innerWidth < 768 ? 30 : 60;
+  const MAX_DIST = 130;
+  const MAX_DIST_SQ = MAX_DIST * MAX_DIST;
 
   function resize() {
     W = canvas.width = canvas.offsetWidth;
     H = canvas.height = canvas.offsetHeight;
   }
-  resize();
-  window.addEventListener('resize', resize, { passive: true });
-
-  const NODE_COUNT = window.innerWidth < 768 ? 30 : 60;
-  const MAX_DIST = 130;
 
   function createNodes() {
     nodes = [];
@@ -140,92 +191,75 @@ function initNetworkCanvas(canvas) {
       });
     }
   }
+
+  resize();
   createNodes();
-
   // Recreate nodes on resize so they stay within the new bounds
-  window.addEventListener('resize', createNodes, { passive: true });
-
-  let mouse = { x: W / 2, y: H / 2 };
-  function onMouse(e) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  }
-  if (!canvas.getAttribute('data-net-mouse')) {
-    canvas.setAttribute('data-net-mouse', '1');
-    window.addEventListener('mousemove', onMouse, { passive: true });
-  }
-
-  // Pause rendering when the section is off-screen for performance
-  let visible = true;
-  let rafId = null;
-  const visibilityObserver = new IntersectionObserver((entries) => {
-    visible = entries[0].isIntersecting;
-    if (visible) loop();
-  }, { rootMargin: '200px' });
-  if (typeof IntersectionObserver !== 'undefined') {
-    visibilityObserver.observe(canvas);
-  }
+  window.addEventListener('resize', debounce(() => {
+    resize();
+    createNodes();
+    if (!rafId) draw();
+  }, 150), { passive: true });
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
+    // Mouse repulsion (mouse is viewport-based, canvas is section-based offset)
+    const canvasRect = canvas.getBoundingClientRect();
+    const mx = netMouse.x - canvasRect.left;
+    const my = netMouse.y - canvasRect.top;
+
     // Update positions
-    nodes.forEach(n => {
+    for (const n of nodes) {
       n.x += n.vx;
       n.y += n.vy;
       if (n.x < 0 || n.x > W) n.vx *= -1;
       if (n.y < 0 || n.y > H) n.vy *= -1;
 
-      // Mouse repulsion (mouse is viewport-based, canvas is section-based offset)
-      const canvasRect = canvas.getBoundingClientRect();
-      const mx = mouse.x - canvasRect.left;
-      const my = mouse.y - canvasRect.top;
       const dx = n.x - mx;
       const dy = n.y - my;
-      const dist = Math.hypot(dx, dy);
-      if (dist < 80) {
+      const distSq = dx * dx + dy * dy;
+      if (distSq < 6400 && distSq > 0) {
+        const dist = Math.sqrt(distSq);
         const f = (80 - dist) / 80 * 0.4;
         n.vx += (dx / dist) * f;
         n.vy += (dy / dist) * f;
         const speed = Math.hypot(n.vx, n.vy);
         if (speed > 2) { n.vx /= speed; n.vy /= speed; }
       }
-    });
+    }
 
     // Draw connections
+    ctx.lineWidth = 0.6;
     for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
       for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x;
-        const dy = nodes[i].y - nodes[j].y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < MAX_DIST) {
-          const alpha = (1 - dist / MAX_DIST) * 0.25;
+        const b = nodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const distSq = dx * dx + dy * dy;
+        if (distSq < MAX_DIST_SQ) {
+          const alpha = (1 - Math.sqrt(distSq) / MAX_DIST) * 0.25;
           ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
           ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
-          ctx.lineWidth = 0.6;
           ctx.stroke();
         }
       }
     }
 
     // Draw nodes
-    nodes.forEach(n => {
+    for (const n of nodes) {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
       ctx.fillStyle = `hsla(${n.hue}, 90%, 70%, ${n.alpha})`;
       ctx.fill();
 
       // Glow
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
-      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3);
-      grad.addColorStop(0, `hsla(${n.hue}, 90%, 70%, 0.15)`);
-      grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad;
-      ctx.fill();
-    });
+      const g = n.r * 3;
+      ctx.drawImage(getGlowSprite(n.hue), n.x - g, n.y - g, g * 2, g * 2);
+    }
 
     // Diagonal light beam
     const t = Date.now() * 0.0003;
@@ -238,12 +272,24 @@ function initNetworkCanvas(canvas) {
     ctx.fillRect(0, 0, W, H);
   }
 
+  // Reduced motion: render a single still frame
+  if (prefersReducedMotion) {
+    draw();
+    return;
+  }
+
+  // Only animate while the canvas is near the viewport. The rafId guard
+  // ensures there is never more than one loop running per canvas.
   function loop() {
-    if (!visible) return;
+    if (!visible) { rafId = null; return; }
     draw();
     rafId = requestAnimationFrame(loop);
   }
-  loop();
+
+  new IntersectionObserver((entries) => {
+    visible = entries[0].isIntersecting;
+    if (visible && !rafId) rafId = requestAnimationFrame(loop);
+  }, { rootMargin: '100px' }).observe(canvas);
 }
 
 // ===================== HERO CANVAS (Network Nodes) =====================
@@ -285,6 +331,7 @@ function createParticlesIn(container, count) {
 }
 
 (function createParticles() {
+  if (prefersReducedMotion) return;
   const heroContainer = qs('#hero-particles');
   if (heroContainer) {
     createParticlesIn(heroContainer, 25);
@@ -296,7 +343,7 @@ function createParticlesIn(container, count) {
 
 // Spread floating particles across every section alongside the network canvas
 (function createSectionParticles() {
-  if (!qs('#hero-particles')) return;
+  if (prefersReducedMotion || !qs('#hero-particles')) return;
   qsa('.section').forEach(sec => {
     if (sec.querySelector('.section-particles')) return;
     const layer = document.createElement('div');
@@ -349,7 +396,7 @@ function createParticlesIn(container, count) {
   }
 
   resize();
-  window.addEventListener('resize', resize, { passive: true });
+  window.addEventListener('resize', debounce(resize, 150), { passive: true });
 })();
 
 // ===================== SCROLL REVEAL =====================
@@ -411,18 +458,6 @@ const skillBarObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 
 qsa('.skills-category, .language-card').forEach(el => skillBarObserver.observe(el));
-
-// Lang bars (global trigger)
-const langBarObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const fill = entry.target.querySelector('.lang-fill');
-      if (fill) setTimeout(() => { fill.style.width = `${fill.dataset.width}%`; }, 200);
-      langBarObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.4 });
-qsa('.language-card').forEach(el => langBarObserver.observe(el));
 
 // ===================== RING ANIMATIONS =====================
 const ringObserver = new IntersectionObserver((entries) => {
@@ -486,77 +521,42 @@ const heroStats = qs('.hero-stats');
 if (heroStats) statObserver.observe(heroStats);
 
 // ===================== CONTACT FORM =====================
+// There is no backend, so the form composes an email in the visitor's mail
+// client instead of pretending to send. All values are URL-encoded.
+const CONTACT_EMAIL = 'kimberleymubiru21@gmail.com';
 const contactForm = qs('#contact-form');
 const formSuccess = qs('#form-success');
 
 if (contactForm) {
-  contactForm.addEventListener('submit', async (e) => {
+  contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const btn = qs('#form-submit-btn');
-    btn.innerHTML = '<i class="ph ph-circle-notch" style="animation:spin 1s linear infinite"></i> Sending...';
-    btn.disabled = true;
+    if (!contactForm.reportValidity()) return;
 
-    // Simulate send delay
-    await new Promise(r => setTimeout(r, 1200));
+    const field = name => contactForm.elements[name].value.trim().slice(0, 2000);
+    const subject = field('subject');
+    const body = `${field('message')}\n\n— ${field('name')} <${field('email')}>`;
+    window.location.href =
+      `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    contactForm.reset();
-    btn.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> Send Message';
-    btn.disabled = false;
     formSuccess.classList.add('show');
-
-    setTimeout(() => formSuccess.classList.remove('show'), 4000);
+    setTimeout(() => formSuccess.classList.remove('show'), 6000);
   });
 }
-
-// Spin keyframe for loading icon
-const spinStyle = document.createElement('style');
-spinStyle.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
-document.head.appendChild(spinStyle);
 
 // ===================== BUTTON RIPPLE EFFECT =====================
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.btn');
-  if (!btn) return;
+  if (!btn || prefersReducedMotion) return;
   const ripple = document.createElement('span');
   const rect = btn.getBoundingClientRect();
   const size = Math.max(rect.width, rect.height) * 1.5;
-  ripple.style.cssText = `
-    position:absolute;
-    width:${size}px;height:${size}px;
-    left:${e.clientX - rect.left - size/2}px;
-    top:${e.clientY - rect.top - size/2}px;
-    background:rgba(255,255,255,0.15);
-    border-radius:50%;
-    pointer-events:none;
-    animation:ripple-anim 0.6s ease-out forwards;
-  `;
+  ripple.className = 'ripple';
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+  ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
   btn.appendChild(ripple);
   setTimeout(() => ripple.remove(), 700);
 });
-
-const rippleStyle = document.createElement('style');
-rippleStyle.textContent = `
-  @keyframes ripple-anim {
-    from { transform:scale(0); opacity:1; }
-    to { transform:scale(1); opacity:0; }
-  }
-`;
-document.head.appendChild(rippleStyle);
-
-// ===================== TIMELINE HOVER GLOW =====================
-qsa('.timeline-node i').forEach(node => {
-  const colors = { '--glow-color': 'rgba(34,211,238,0.4)' };
-});
-
-// ===================== SCROLL-BASED PARALLAX (subtle) =====================
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  const heroContent = qs('.hero-content');
-  if (heroContent) {
-    heroContent.style.transform = `translateY(${y * 0.15}px)`;
-    heroContent.style.opacity = Math.max(0, 1 - y / 600);
-  }
-}, { passive: true });
 
 // ===================== SECTION ENTRY ANIMATIONS =====================
 // Stagger timeline items
@@ -575,40 +575,12 @@ qsa('.timeline-card, .edu-card, .cert-card, .impact-card').forEach(card => {
   });
 });
 
-// Mouse-following glow effect for cards
-const cardGlowStyle = document.createElement('style');
-cardGlowStyle.textContent = `
-  .timeline-card::before,
-  .edu-card::before,
-  .impact-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(34,211,238,0.06) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .timeline-card:hover::before,
-  .edu-card:hover::before,
-  .impact-card:hover::before {
-    opacity: 1;
-  }
-  .timeline-card { position: relative; overflow: hidden; }
-`;
-document.head.appendChild(cardGlowStyle);
-
 // ===================== DOWNLOAD CV =====================
 const downloadCvBtn = qs('#download-cv-btn');
 if (downloadCvBtn) {
   downloadCvBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    // Show a feedback message since no CV file exists yet
+    // Show a feedback message until the final CV is published
     const original = downloadCvBtn.innerHTML;
     downloadCvBtn.innerHTML = '<i class="ph ph-check"></i> CV Coming Soon!';
     setTimeout(() => { downloadCvBtn.innerHTML = original; }, 2500);
@@ -616,9 +588,6 @@ if (downloadCvBtn) {
 }
 
 // ===================== INIT =====================
-document.addEventListener('DOMContentLoaded', () => {
-  // Ensure all observers run after DOM is ready
-  updateProgress();
-  updateActiveNav();
-  console.log('🚀 Kimberley Mubiru Portfolio | Powered by Growth, Governance & Grit');
-});
+// The script is loaded with `defer`, so the DOM is already parsed here.
+updateProgress();
+updateActiveNav();

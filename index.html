@@ -32,9 +32,8 @@
   <meta name="keywords" content="Kimberley Mubiru, ICT Project Management, Business Applications, Banking Technology, Oracle Flexcube, UAT, Enterprise Software, Nairobi Kenya" />
   <meta name="theme-color" content="#020814" />
 
-  <!-- Preload critical asset -->
-  <link rel="preload" href="styles.css" as="style" />
-  <link rel="preload" href="script.js" as="script" />
+  <!-- Preload the above-the-fold font so the hero text renders without a swap -->
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -122,15 +121,10 @@
   <!-- PWA / Web App Manifest -->
   <link rel="manifest" href="manifest.webmanifest" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <!-- Phosphor Icons -->
-  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3/src/index.js"></script>
-
+  <!-- Styles (fonts and icons are self-hosted) -->
+  <link rel="stylesheet" href="assets/icons/phosphor.css" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
 
@@ -377,7 +371,7 @@
         <div class="timeline-item reveal">
           <div class="timeline-node">
             <div class="node-ring"></div>
-            <i class="ph ph-building-office"></i>
+            <i class="ph ph-buildings"></i>
           </div>
           <div class="timeline-connector"></div>
           <div class="timeline-card">
@@ -523,7 +517,7 @@
                 <span class="skill-pct">78%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="78" style="--accent: #22d3ee;"></div>
+                <div class="skill-fill" data-width="78"></div>
               </div>
             </div>
             <div class="skill-item">
@@ -532,7 +526,7 @@
                 <span class="skill-pct">72%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="72" style="--accent: #22d3ee;"></div>
+                <div class="skill-fill" data-width="72"></div>
               </div>
             </div>
           </div>
@@ -551,7 +545,7 @@
                 <span class="skill-pct">80%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="80" style="--accent: #3b82f6;"></div>
+                <div class="skill-fill" data-width="80"></div>
               </div>
             </div>
             <div class="skill-item">
@@ -560,7 +554,7 @@
                 <span class="skill-pct">75%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="75" style="--accent: #3b82f6;"></div>
+                <div class="skill-fill" data-width="75"></div>
               </div>
             </div>
           </div>
@@ -579,7 +573,7 @@
                 <span class="skill-pct">85%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="85" style="--accent: #a855f7;"></div>
+                <div class="skill-fill" data-width="85"></div>
               </div>
             </div>
             <div class="skill-item">
@@ -588,7 +582,7 @@
                 <span class="skill-pct">88%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="88" style="--accent: #a855f7;"></div>
+                <div class="skill-fill" data-width="88"></div>
               </div>
             </div>
           </div>
@@ -607,7 +601,7 @@
                 <span class="skill-pct">82%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="82" style="--accent: #f59e0b;"></div>
+                <div class="skill-fill" data-width="82"></div>
               </div>
             </div>
             <div class="skill-item">
@@ -616,7 +610,7 @@
                 <span class="skill-pct">90%</span>
               </div>
               <div class="skill-bar">
-                <div class="skill-fill" data-width="90" style="--accent: #f59e0b;"></div>
+                <div class="skill-fill" data-width="90"></div>
               </div>
             </div>
           </div>
@@ -704,7 +698,7 @@
       </div>
 
       <!-- Certifications -->
-      <div class="section-header reveal" style="margin-top: 4rem;">
+      <div class="section-header section-header-spaced reveal">
         <span class="section-badge">Professional Credentials</span>
         <h2 class="section-title">Certifi<span class="gradient-text">cations</span></h2>
       </div>
@@ -742,7 +736,7 @@
           <div class="cert-glow"></div>
         </div>
         <div class="cert-card reveal" tabindex="0">
-          <div class="cert-badge-icon"><i class="ph ph-network"></i></div>
+          <div class="cert-badge-icon"><i class="ph ph-share-network"></i></div>
           <div class="cert-info">
             <h4>Routing &amp; Switching Certification</h4>
             <span class="cert-issuer">Huawei</span>
@@ -801,8 +795,8 @@
               <circle cx="60" cy="60" r="50" fill="none" stroke="url(#grad1)" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" class="impact-ring-fill" data-offset="16" stroke-linecap="round" transform="rotate(-90 60 60)"/>
               <defs>
                 <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#22d3ee"/>
-                  <stop offset="100%" style="stop-color:#3b82f6"/>
+                  <stop offset="0%" stop-color="#22d3ee"/>
+                  <stop offset="100%" stop-color="#3b82f6"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -821,8 +815,8 @@
               <circle cx="60" cy="60" r="50" fill="none" stroke="url(#grad2)" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" class="impact-ring-fill" data-offset="28" stroke-linecap="round" transform="rotate(-90 60 60)"/>
               <defs>
                 <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#a855f7"/>
-                  <stop offset="100%" style="stop-color:#ec4899"/>
+                  <stop offset="0%" stop-color="#a855f7"/>
+                  <stop offset="100%" stop-color="#ec4899"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -841,8 +835,8 @@
               <circle cx="60" cy="60" r="50" fill="none" stroke="url(#grad3)" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" class="impact-ring-fill" data-offset="25" stroke-linecap="round" transform="rotate(-90 60 60)"/>
               <defs>
                 <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#f59e0b"/>
-                  <stop offset="100%" style="stop-color:#ef4444"/>
+                  <stop offset="0%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#ef4444"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -900,31 +894,31 @@
             </a>
           </div>
         </div>
-        <form class="contact-form reveal" id="contact-form" novalidate>
+        <form class="contact-form reveal" id="contact-form">
           <div class="form-group">
             <label for="form-name">Full Name</label>
             <div class="input-wrap">
-              <input type="text" id="form-name" name="name" placeholder="Your full name" required autocomplete="name"/>
+              <input type="text" id="form-name" name="name" placeholder="Your full name" required autocomplete="name" maxlength="100"/>
               <i class="ph ph-user input-icon"></i>
             </div>
           </div>
           <div class="form-group">
             <label for="form-email">Email Address</label>
             <div class="input-wrap">
-              <input type="email" id="form-email" name="email" placeholder="your@email.com" required autocomplete="email"/>
+              <input type="email" id="form-email" name="email" placeholder="your@email.com" required autocomplete="email" maxlength="254"/>
               <i class="ph ph-envelope input-icon"></i>
             </div>
           </div>
           <div class="form-group">
             <label for="form-subject">Subject</label>
             <div class="input-wrap">
-              <input type="text" id="form-subject" name="subject" placeholder="How can I help?" required/>
+              <input type="text" id="form-subject" name="subject" placeholder="How can I help?" required maxlength="150"/>
               <i class="ph ph-chat-text input-icon"></i>
             </div>
           </div>
           <div class="form-group">
             <label for="form-message">Message</label>
-            <textarea id="form-message" name="message" placeholder="Tell me about the opportunity or project..." rows="5" required></textarea>
+            <textarea id="form-message" name="message" placeholder="Tell me about the opportunity or project..." rows="5" required maxlength="2000"></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-full" id="form-submit-btn">
             <i class="ph ph-paper-plane-tilt"></i>
@@ -932,7 +926,7 @@
           </button>
           <div class="form-success" id="form-success" aria-live="polite">
             <i class="ph ph-check-circle"></i>
-            Message sent successfully!
+            Opening your email app to send the message…
           </div>
         </form>
       </div>
@@ -966,6 +960,5 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
 </body>
 </html>

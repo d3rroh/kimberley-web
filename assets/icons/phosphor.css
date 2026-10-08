@@ -1,0 +1,54 @@
+/* Phosphor Icons (regular) v2.0.3 — MIT licence. Subset to the icons this site uses.
+   To add an icon, re-run the subset with its name. */
+@font-face {
+  font-family: "Phosphor";
+  src: url("phosphor.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+.ph {
+  font-family: "Phosphor" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.ph.ph-activity:before { content: "\ec98"; }
+.ph.ph-bank:before { content: "\e992"; }
+.ph.ph-book-open:before { content: "\e9c7"; }
+.ph.ph-briefcase:before { content: "\e9d4"; }
+.ph.ph-bug:before { content: "\e9da"; }
+.ph.ph-buildings:before { content: "\e9dd"; }
+.ph.ph-chart-line:before { content: "\ea1a"; }
+.ph.ph-chat-text:before { content: "\ea2f"; }
+.ph.ph-check:before { content: "\ea30"; }
+.ph.ph-check-circle:before { content: "\ea31"; }
+.ph.ph-check-square:before { content: "\ea34"; }
+.ph.ph-circle-notch:before { content: "\ea3b"; }
+.ph.ph-code:before { content: "\ea58"; }
+.ph.ph-cpu:before { content: "\ea72"; }
+.ph.ph-database:before { content: "\ea8f"; }
+.ph.ph-desktop:before { content: "\ea90"; }
+.ph.ph-download-simple:before { content: "\eab6"; }
+.ph.ph-envelope:before { content: "\eac5"; }
+.ph.ph-envelope-simple:before { content: "\eac7"; }
+.ph.ph-github-logo:before { content: "\eb53"; }
+.ph.ph-google-logo:before { content: "\eb62"; }
+.ph.ph-graduation-cap:before { content: "\eb67"; }
+.ph.ph-hard-drives:before { content: "\eb83"; }
+.ph.ph-kanban:before { content: "\ebad"; }
+.ph.ph-lightning:before { content: "\ebbd"; }
+.ph.ph-linkedin-logo:before { content: "\ebc4"; }
+.ph.ph-map-pin:before { content: "\ebe0"; }
+.ph.ph-paper-plane-tilt:before { content: "\ec48"; }
+.ph.ph-rocket:before { content: "\ecb5"; }
+.ph.ph-share-network:before { content: "\ecd1"; }
+.ph.ph-shield:before { content: "\ecd2"; }
+.ph.ph-shield-check:before { content: "\ecd3"; }
+.ph.ph-trend-up:before { content: "\ed92"; }
+.ph.ph-user:before { content: "\eda0"; }

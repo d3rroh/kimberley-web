@@ -1,0 +1,11 @@
+.git
+.github
+.gitignore
+.dockerignore
+.htaccess
+Dockerfile
+vhost.conf
+site
+site.zip
+*.tar.gz
+*.zip

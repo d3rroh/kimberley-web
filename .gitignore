@@ -1,1 +1,6 @@
 meta.xml
+
+# Server backups and archives: never commit or deploy these
+site/
+*.zip
+*.tar.gz

@@ -3,6 +3,32 @@
    Dark Fintech Theme | Glassmorphism | Enterprise Premium
    ===================================================== */
 
+/* ---- Self-hosted fonts (variable, latin subsets) ---- */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('assets/fonts/space-grotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('assets/fonts/space-grotesk-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('assets/fonts/jetbrains-mono-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* ---- CSS Custom Properties ---- */
 :root {
   --navy-900: #020814;
@@ -42,7 +68,7 @@
   --radius-pill: 9999px;
   --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --font-main: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-main: 'Space Grotesk', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --gradient-hero: linear-gradient(135deg, #020814 0%, #071428 40%, #0a1a35 70%, #071428 100%);
   --bg-section: var(--navy-900);
@@ -1755,4 +1781,63 @@ a.contact-value:hover { color: var(--cyan-400); }
   .rings-row { gap: 1rem; }
   .ring-wrapper { width: 80px; height: 80px; }
   .ring-value { font-size: 0.85rem; }
+}
+
+/* ===================== MOVED FROM INLINE / JS-INJECTED STYLES =====================
+   Kept in the stylesheet so the Content-Security-Policy can forbid inline styles. */
+.skills-category:nth-child(1) { --accent: #22d3ee; }
+.skills-category:nth-child(2) { --accent: #3b82f6; }
+.skills-category:nth-child(3) { --accent: #a855f7; }
+.skills-category:nth-child(4) { --accent: #f59e0b; }
+
+.section-header.section-header-spaced { margin-top: 4rem; }
+
+.ph.spin { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.ripple {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: ripple-anim 0.6s ease-out forwards;
+}
+@keyframes ripple-anim {
+  from { transform: scale(0); opacity: 1; }
+  to { transform: scale(1); opacity: 0; }
+}
+
+/* Mouse-following glow effect for cards */
+.timeline-card::before,
+.edu-card::before,
+.impact-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(34, 211, 238, 0.06) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.timeline-card:hover::before,
+.edu-card:hover::before,
+.impact-card:hover::before {
+  opacity: 1;
+}
+.timeline-card { position: relative; overflow: hidden; }
+
+/* ===================== REDUCED MOTION ===================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .particle, .hero-particles, .section-particles { display: none; }
 }
