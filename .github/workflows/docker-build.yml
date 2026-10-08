@@ -1,22 +1,36 @@
-name: Build and Push Docker Image
+name: Build and Deploy
 
 on:
   push:
     branches: [master]
     tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  IMAGE: d3rroh/kimberley-web
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ env.IMAGE }}:${{ steps.short.outputs.sha }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           # Don't write the job token into .git/config
           persist-credentials: false
+
+      - name: Short SHA
+        id: short
+        run: echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -31,10 +45,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: d3rroh/kimberley-web
+          images: ${{ env.IMAGE }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
-            type=sha,prefix=
+            type=sha,prefix=,format=short
+            type=ref,event=tag
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -42,5 +57,70 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check deploy secrets
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          missing=""
+          for v in SSH_HOST SSH_USER SSH_PRIVATE_KEY SSH_KNOWN_HOSTS; do
+            [ -n "${!v}" ] || missing="$missing $v"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secrets:$missing (see deploy/README.md)"
+            exit 1
+          fi
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Pinned host key: the deploy refuses to connect to an unknown server
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+          IMAGE_REF: ${{ needs.build.outputs.image }}
+          CONTAINER_NAME: ${{ vars.CONTAINER_NAME || 'kimberley-web' }}
+          HOST_PORT: ${{ vars.HOST_PORT || '80' }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" \
+            -o StrictHostKeyChecking=yes -o BatchMode=yes \
+            "$SSH_USER@$SSH_HOST" \
+            bash -s -- "$IMAGE_REF" "$CONTAINER_NAME" "$HOST_PORT" < deploy/deploy.sh
+
+      - name: Check live site
+        run: |
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' https://kimberley.name.ng/) && [ "$code" = 200 ] && exit 0
+            sleep 5
+          done
+          echo "Live site returned $code"; exit 1
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
