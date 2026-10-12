@@ -116,7 +116,7 @@ jobs:
           ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" \
             -o StrictHostKeyChecking=yes -o BatchMode=yes \
             "$SSH_USER@$SSH_HOST" \
-            "test -d '$DEPLOY_PATH' && tar -xzf - --no-same-owner -C '$DEPLOY_PATH'"
+            "if [ ! -d '$DEPLOY_PATH' ] || [ ! -w '$DEPLOY_PATH' ]; then echo \"::error::$DEPLOY_PATH is missing or not writable by \$(whoami)\"; exit 1; fi; tar -xzf - --no-same-owner -C '$DEPLOY_PATH'"
 
       - name: Check live site
         run: |
