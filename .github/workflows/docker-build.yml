@@ -63,7 +63,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     environment: production
@@ -73,19 +72,20 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Check deploy secrets
+      - name: Check deploy settings
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
         run: |
           missing=""
-          for v in SSH_HOST SSH_USER SSH_PRIVATE_KEY SSH_KNOWN_HOSTS; do
+          for v in SSH_HOST SSH_USER SSH_PRIVATE_KEY SSH_KNOWN_HOSTS DEPLOY_PATH; do
             [ -n "${!v}" ] || missing="$missing $v"
           done
           if [ -n "$missing" ]; then
-            echo "::error::Missing repository secrets:$missing (see deploy/README.md)"
+            echo "::error::Missing deploy settings:$missing (see deploy/README.md)"
             exit 1
           fi
 
@@ -100,19 +100,23 @@ jobs:
           # Pinned host key: the deploy refuses to connect to an unknown server
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
-      - name: Deploy to server
+      - name: Copy site to server
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
-          IMAGE_REF: ${{ env.IMAGE }}:${{ needs.build.outputs.tag }}
-          CONTAINER_NAME: ${{ vars.CONTAINER_NAME || 'kimberley-web' }}
-          HOST_PORT: ${{ vars.HOST_PORT || '80' }}
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
         run: |
+          # Same public files as the Docker image, plus .htaccess for LiteSpeed.
+          # Files are overwritten in place; nothing else in the web root is removed.
+          tar -czf - \
+            index.html styles.css script.js robots.txt sitemap.xml manifest.webmanifest cv.pdf \
+            favicon.svg favicon-16.png favicon-32.png favicon-64.png og-image.png og-banner.svg \
+            .htaccess assets |
           ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" \
             -o StrictHostKeyChecking=yes -o BatchMode=yes \
             "$SSH_USER@$SSH_HOST" \
-            bash -s -- "$IMAGE_REF" "$CONTAINER_NAME" "$HOST_PORT" < deploy/deploy.sh
+            "test -d '$DEPLOY_PATH' && tar -xzf - --no-same-owner -C '$DEPLOY_PATH'"
 
       - name: Check live site
         run: |
