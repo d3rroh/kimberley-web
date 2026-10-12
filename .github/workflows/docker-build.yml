@@ -63,62 +63,36 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
+    needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     environment: production
+    env:
+      # Deploys only once this secret exists (base64 kubeconfig for the k3s
+      # cluster); until then the workflow just builds and pushes.
+      HAS_KUBECONFIG: ${{ secrets.KUBECONFIG_B64 != '' }}
+      K8S_NAMESPACE: ${{ vars.K8S_NAMESPACE || 'kimberley-web' }}
+      K8S_DEPLOYMENT: ${{ vars.K8S_DEPLOYMENT || 'kimberley-web' }}
+      K8S_CONTAINER: ${{ vars.K8S_CONTAINER || 'web' }}
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Check deploy settings
+      - name: Deploy to k3s
+        if: env.HAS_KUBECONFIG == 'true'
         env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
-          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+          KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}
+          IMAGE_REF: ${{ env.IMAGE }}:${{ needs.build.outputs.tag }}
         run: |
-          missing=""
-          for v in SSH_HOST SSH_USER SSH_PRIVATE_KEY SSH_KNOWN_HOSTS DEPLOY_PATH; do
-            [ -n "${!v}" ] || missing="$missing $v"
-          done
-          if [ -n "$missing" ]; then
-            echo "::error::Missing deploy settings:$missing (see deploy/README.md)"
-            exit 1
-          fi
+          install -m 700 -d ~/.kube
+          echo "$KUBECONFIG_B64" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+          kubectl -n "$K8S_NAMESPACE" set image "deployment/$K8S_DEPLOYMENT" "$K8S_CONTAINER=$IMAGE_REF"
+          kubectl -n "$K8S_NAMESPACE" rollout status "deployment/$K8S_DEPLOYMENT" --timeout=120s
 
-      - name: Configure SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
-        run: |
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          # Pinned host key: the deploy refuses to connect to an unknown server
-          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-
-      - name: Copy site to server
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
-          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
-        run: |
-          # Same public files as the Docker image, plus .htaccess for LiteSpeed.
-          # Files are overwritten in place; nothing else in the web root is removed.
-          tar -czf - \
-            index.html styles.css script.js robots.txt sitemap.xml manifest.webmanifest cv.pdf \
-            favicon.svg favicon-16.png favicon-32.png favicon-64.png og-image.png og-banner.svg \
-            .htaccess assets |
-          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" \
-            -o StrictHostKeyChecking=yes -o BatchMode=yes \
-            "$SSH_USER@$SSH_HOST" \
-            "if [ ! -d '$DEPLOY_PATH' ] || [ ! -w '$DEPLOY_PATH' ]; then echo \"::error::$DEPLOY_PATH is missing or not writable by \$(whoami)\"; exit 1; fi; tar -xzf - --no-same-owner -C '$DEPLOY_PATH'"
+      - name: Skip deploy
+        if: env.HAS_KUBECONFIG != 'true'
+        run: echo "::notice::KUBECONFIG_B64 is not set; image pushed but not deployed (see deploy/README.md)"
 
       - name: Check live site
+        if: env.HAS_KUBECONFIG == 'true'
         run: |
           for i in 1 2 3 4 5; do
             code=$(curl -s -o /dev/null -w '%{http_code}' https://kimberley.name.ng/) && [ "$code" = 200 ] && exit 0
@@ -126,6 +100,6 @@ jobs:
           done
           echo "Live site returned $code"; exit 1
 
-      - name: Remove SSH key
+      - name: Remove kubeconfig
         if: always()
-        run: rm -f ~/.ssh/deploy_key
+        run: rm -f ~/.kube/config

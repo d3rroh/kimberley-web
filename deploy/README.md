@@ -3,34 +3,28 @@
 Every push to `master` runs `.github/workflows/docker-build.yml`:
 
 1. **build**: builds the image and pushes `d3rroh/kimberley-web:latest` and `:<short-sha>` to Docker Hub.
-2. **deploy**: copies the public site files (the same ones the image contains, plus `.htaccess`) over SSH into the web root that OpenLiteSpeed serves (`DEPLOY_PATH`). Files are overwritten in place; nothing else in the web root is deleted, so `.well-known/` and other server files are left alone.
-3. Finally the workflow checks that https://kimberley.name.ng/ returns 200.
+2. **deploy**: points the k3s deployment at the exact `:<short-sha>` image (`kubectl set image`) and waits for the rollout to finish, then checks that https://kimberley.name.ng/ returns 200.
 
-The server needs no Docker, only SSH and `tar`. Deploys can also be run by hand from the Actions tab (**Run workflow**).
+The deploy step is skipped (with a notice) until `KUBECONFIG_B64` is set, so pushes still build and push the image. Deploys can also be run by hand from the Actions tab (**Run workflow**).
 
 ## One-time setup
 
-### On the server
-
-The SSH user must be able to write to the web root, so the simplest choice is the site's own user (the owner of `public_html`):
-
-```sh
-ls -ld /home/kimberley.name.ng/public_html   # shows the owner
-# paste the public key (deploy_key.pub) into that user's ~/.ssh/authorized_keys
-```
-
-### GitHub repository secrets
+### GitHub repository secret
 
 | Secret | Value |
 |---|---|
-| `SSH_HOST` | Server IP or hostname (the origin server, not the Cloudflare address) |
-| `SSH_USER` | The owner of the web root |
-| `SSH_PRIVATE_KEY` | The private key matching the server's `authorized_keys` entry |
-| `SSH_KNOWN_HOSTS` | Output of `ssh-keyscan -p <port> <host>`; check it against the server's real host key |
-| `SSH_PORT` | Optional, defaults to `22` |
+| `KUBECONFIG_B64` | `base64 -w0` of a kubeconfig for the k3s cluster, with its `server:` set to an address GitHub can reach |
 
-### GitHub repository variables
+```sh
+base64 -w0 <path-to-kubeconfig> | gh secret set KUBECONFIG_B64 -R d3rroh/kimberley-web
+```
 
-| Variable | Value |
+### GitHub repository variables (optional)
+
+| Variable | Default |
 |---|---|
-| `DEPLOY_PATH` | Absolute path of the web root, e.g. `/home/kimberley.name.ng/public_html` |
+| `K8S_NAMESPACE` | `kimberley-web` |
+| `K8S_DEPLOYMENT` | `kimberley-web` |
+| `K8S_CONTAINER` | `web` |
+
+Check the real names with `kubectl get deploy -A -o wide`.
